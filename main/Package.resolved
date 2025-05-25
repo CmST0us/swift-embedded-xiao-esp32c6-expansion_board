@@ -1,0 +1,24 @@
+{
+  "originHash" : "bef3ed5637fba50fe3152f3ca106a084f458638cb6941199a388d65c794146ad",
+  "pins" : [
+    {
+      "identity" : "swiftsdl2",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CmST0us/SwiftSDL2.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a4ae230dc0ab5b28e3169f0306071f76a808055d"
+      }
+    },
+    {
+      "identity" : "u8g2kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CmST0us/U8g2Kit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "1bde94d08c9b38232f808e10022d0c7a15c26f22"
+      }
+    }
+  ],
+  "version" : 3
+}

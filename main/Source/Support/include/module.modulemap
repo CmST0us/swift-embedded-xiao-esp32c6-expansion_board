@@ -1,0 +1,4 @@
+module Support {
+    header "support.h"
+    export *
+}
