@@ -62,20 +62,7 @@ set(CMAKE_Swift_COMPILATION_MODE_DEFAULT wholemodule)
 set(CMAKE_Swift_COMPILATION_MODE wholemodule)
 enable_language(Swift)
 
-# Add linker flags to discard .swift_modhash section
-target_link_options(${COMPONENT_LIB} PRIVATE 
-    "LINKER:--gc-sections"
-    "LINKER:--discard-all"
-    "LINKER:--strip-debug"
-)
-
-add_custom_command(
-    TARGET ${COMPONENT_LIB}
-    POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} --remove-section .swift_modhash
-            $<TARGET_FILE:${COMPONENT_LIB}> $<TARGET_FILE:${COMPONENT_LIB}>
-)
-
+# ======================Package Support======================
 # Add Package Support
 # The target swift will be building for
 set(SWIFT_TARGET "riscv32-none-none-eabi")
@@ -83,8 +70,6 @@ set(SWIFT_TARGET "riscv32-none-none-eabi")
 set(SWIFT_LSP_TARGET "x86_64-unknown-linux-gnu")
 # Name of the library product in Package.swift
 set(SWIFT_PRODUCT_NAME "App")
-set(MARCH_FLAG "rv32imc_zicsr_zifencei")
-set(MABI_FLAG "ilp32")
 
 # Define output file of swift package
 set(SWIFT_PRODUCT_BUILD   "${COMPONENT_DIR}/.build")
@@ -118,25 +103,36 @@ add_custom_target(swift-archive
 			--package-path ${COMPONENT_DIR}
 			
 			--triple ${SWIFT_TARGET}
+			-Xswiftc -target -Xswiftc riscv32-none-none-eabi
 			-Xswiftc -enable-experimental-feature -Xswiftc Embedded
 			-Xswiftc -wmo
 			-Xswiftc -parse-as-library
 			-Xswiftc -Osize
-			
 			-Xswiftc -Xfrontend -Xswiftc -function-sections
-
-			-Xcc -march=${MARCH_FLAG}
-			-Xcc -mabi=${MABI_FLAG}
-			
-			# Link atomic operations library
+			-Xswiftc -Xfrontend -Xswiftc -enable-single-module-llvm-emission
 			-Xlinker -lgcc
-			-Xlinker -lm
+			-Xlinker -lm 
+
+			-Xswiftc -pch-output-dir -Xswiftc /tmp
+
+			-Xcc ${march_flag} 
+			-Xcc ${mabi_flag} 
+			-Xcc -fno-pic 
+			-Xcc -fno-pie
 			
 			# Get includes for C-std libraries and extra components
 			${SWIFT_INCLUDES_LIST}
             $$\( echo '$<TARGET_PROPERTY:__idf_main,INCLUDE_DIRECTORIES>' | tr '\;' '\\n' | sed -e 's/\\\(.*\\\)/-Xcc -I\\1/g' \)
 	BYPRODUCTS
 		${SWIFT_PRODUCT_ARCHIVE}
+)
+
+
+add_custom_command(
+    TARGET swift-archive
+    POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} --remove-section .swift_modhash
+        ${SWIFT_PRODUCT_ARCHIVE} ${SWIFT_PRODUCT_ARCHIVE}
 )
 
 # Generate all necessary include paths for LSP
@@ -175,8 +171,6 @@ add_custom_command(
 		&& \( mv -f -T ${SWIFT_PRODUCT_RELEASE}/$$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 ' T app_main' | cut -d: -f2 \) ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o 2>/dev/null || \(
 			rm -rf ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o && mv -f ${SWIFT_PRODUCT_RELEASE}/$$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 ' T app_main' | cut -d: -f2 \) ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o \)
 		\)
-        # Remove .swift_modhash section from the extracted object file
-		&& llvm-objcopy-14 --remove-section .swift_modhash ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o 2>/dev/null || true
 	DEPENDS 
 		swift-archive
 		${SWIFT_PRODUCT_ARCHIVE}
@@ -193,5 +187,5 @@ target_link_libraries(__idf_main ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_mai
 target_link_libraries(__idf_main gcc)
 # Add math library if needed
 target_link_libraries(__idf_main m)
-
+# Add swift_package_app_main to __idf_main
 add_dependencies(__idf_main swift_package_app_main)
