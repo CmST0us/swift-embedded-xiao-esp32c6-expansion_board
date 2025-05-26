@@ -1,5 +1,5 @@
 {
-  "originHash" : "bef3ed5637fba50fe3152f3ca106a084f458638cb6941199a388d65c794146ad",
+  "originHash" : "b6d24b77c161de18dbec40b6e69f7bcbef01101abff17dc0196984089c3f78fb",
   "pins" : [
     {
       "identity" : "swiftsdl2",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/CmST0us/U8g2Kit",
       "state" : {
         "branch" : "main",
-        "revision" : "1bde94d08c9b38232f808e10022d0c7a15c26f22"
+        "revision" : "5e351436b50b272d7787b6f11925a76f61fb2d54"
       }
     }
   ],

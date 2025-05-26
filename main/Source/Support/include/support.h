@@ -14,6 +14,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
+#include "driver/i2c.h"
+#include "i2c.h"
 #include "sdkconfig.h"
 
 #include "rtos_utils.h"
+#include "font.h"

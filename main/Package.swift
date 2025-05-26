@@ -26,6 +26,10 @@ let package = Package(
                 .enableExperimentalFeature("Embedded"),
             ]),
 
-        .target(name: "Support"),
+        .target(name: "Support",
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+                .enableExperimentalFeature("Embedded"),
+            ]),
     ]
 )
