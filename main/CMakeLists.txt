@@ -84,9 +84,8 @@ execute_process(COMMAND dirname ${_SWIFT_ABS_LOCATION} OUTPUT_VARIABLE SWIFT_TOO
 # 打印 SWIFT_INCLUDES
 message(STATUS "SWIFT_INCLUDES: ${SWIFT_INCLUDES}")
 
-# 将SWIFT_INCLUDES转换为列表格式，正确处理空格
+# Change SWIFT_INCLUDES to SWIFT_INCLUDES_LIST
 separate_arguments(SWIFT_INCLUDES_LIST UNIX_COMMAND "${SWIFT_INCLUDES}")
-
 
 # Generate Archive
 add_custom_target(swift-archive
