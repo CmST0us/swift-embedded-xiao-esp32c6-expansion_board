@@ -102,6 +102,7 @@ add_custom_target(swift-archive
 			--package-path ${COMPONENT_DIR}
 			
 			--triple ${SWIFT_TARGET}
+			--traits Embedded
 			-Xswiftc -target -Xswiftc riscv32-none-none-eabi
 			-Xswiftc -enable-experimental-feature -Xswiftc Embedded
 			-Xswiftc -wmo
