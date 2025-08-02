@@ -140,9 +140,9 @@ add_custom_target(swift-compile-flags
 		echo ''
 		&&
 		\( echo '${SWIFT_INCLUDES}' && \( echo '$<TARGET_PROPERTY:__idf_main,INCLUDE_DIRECTORIES>' | tr '\;' '\\n' | sed -e 's/\\\(.*\\\)/-Xcc -I\\1/g' \) \)
-		| tr ' ' '\\n' | grep '^-I' > ${SWIFT_PRODUCT_RELEASE}/compile_flags.txt
+		| tr ' ' '\\n' | grep '^-I' > ${SWIFT_PRODUCT_BUILD}/lsp_compile_flags.txt
 	BYPRODUCTS
-		${SWIFT_PRODUCT_RELEASE}/compile_flags.txt
+		${SWIFT_PRODUCT_BUILD}/lsp_compile_flags.txt
 )
 
 # Create needed symlinks so LSP finds the module information
@@ -174,7 +174,7 @@ add_custom_command(
 		swift-archive
 		${SWIFT_PRODUCT_ARCHIVE}
 		swift-compile-flags
-		${SWIFT_PRODUCT_RELEASE}/compile_flags.txt
+		${SWIFT_PRODUCT_BUILD}/lsp_compile_flags.txt
 		swift-lsp-symlink
 )
 add_custom_target(swift_package_app_main DEPENDS ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o)
