@@ -11,8 +11,6 @@ class ESP32C6U8g2Driver: Driver {
     
     init() {
         super.init(u8g2_Setup_ssd1306_i2c_128x64_noname_f, &U8g2Kit.u8g2_cb_r0)
-        // Mask use this, otherwise i2c_driver_install will not found
-        let installHandler = i2c_driver_install
     }
 
     override func onByte(msg: UInt8, arg_int: UInt8, arg_ptr: UnsafeMutableRawPointer?) -> UInt8 {
