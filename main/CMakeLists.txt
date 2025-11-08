@@ -166,10 +166,10 @@ add_custom_command(
 	OUTPUT ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o
 	COMMAND
 		# Extract first .o which defines the 'app_main' symbol
-		${SWIFT_TOOLCHAIN}/llvm-ar x ${SWIFT_PRODUCT_ARCHIVE} $$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 ' T app_main' | cut -d: -f2 \) --output ${SWIFT_PRODUCT_RELEASE}
+		${SWIFT_TOOLCHAIN}/llvm-ar x ${SWIFT_PRODUCT_ARCHIVE} $$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 'app_main' | cut -d: -f2 \) --output ${SWIFT_PRODUCT_RELEASE}
 		# Rename it to a predicatble file
-		&& \( mv -f -T ${SWIFT_PRODUCT_RELEASE}/$$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 ' T app_main' | cut -d: -f2 \) ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o 2>/dev/null || \(
-			rm -rf ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o && mv -f ${SWIFT_PRODUCT_RELEASE}/$$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 ' T app_main' | cut -d: -f2 \) ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o \)
+		&& \( mv -f -T ${SWIFT_PRODUCT_RELEASE}/$$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 'app_main' | cut -d: -f2 \) ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o 2>/dev/null || \(
+			rm -rf ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o && mv -f ${SWIFT_PRODUCT_RELEASE}/$$\( nm --defined-only -A ${SWIFT_PRODUCT_ARCHIVE} | grep -m 1 'app_main' | cut -d: -f2 \) ${SWIFT_PRODUCT_RELEASE}/_swift_package_app_main.o \)
 		\)
 	DEPENDS 
 		swift-archive
