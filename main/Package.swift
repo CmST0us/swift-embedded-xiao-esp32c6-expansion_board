@@ -21,6 +21,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/CmST0us/U8g2Kit", branch: "main", traits: ["Embedded"]),
+        .package(path: "/home/eki/Project/swift/MonoUI", traits: ["Embedded"]),
     ],
     targets: [
 		.target(
@@ -28,7 +29,8 @@ let package = Package(
             dependencies: [
                 "Support",
                 .product(name: "U8g2Kit", package: "U8g2Kit"),
-                .product(name: "CU8g2", package: "U8g2Kit")],
+                .product(name: "CU8g2", package: "U8g2Kit"),
+                .product(name: "MonoUI", package: "MonoUI")],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
                 .enableExperimentalFeature("Embedded", .when(traits: ["Embedded"]))
